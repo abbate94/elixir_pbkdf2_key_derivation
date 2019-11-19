@@ -4,7 +4,7 @@ defmodule Pbkdf2KeyDerivation.MixProject do
   def project do
     [
       app: :pbkdf2_key_derivation,
-      version: "1.0.0",
+      version: "1.0.1",
       elixir: "~> 1.9",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -29,7 +29,7 @@ defmodule Pbkdf2KeyDerivation.MixProject do
   defp package() do
     [
       files: ~w(lib .formatter.exs mix.exs README.md LICENSE.md),
-      licenses: ["Unlicense"],
+      licenses: ["CC0-1.0"],
       links: %{"GitHub" => "https://github.com/abbate94/elixir_pbkdf2_key_derivation"}
     ]
   end

@@ -9,7 +9,7 @@ The package can be installed by adding `pbkdf2_key_derivation` to your list of d
 ```elixir
 def deps do
   [
-    {:pbkdf2_key_derivation, "~> 1.0.0"}
+    {:pbkdf2_key_derivation, "~> 1.0.1"}
   ]
 end
 ```
@@ -53,3 +53,18 @@ iex> Pbkdf2KeyDerivation.pbkdf2(:sha, "password", "salt", 1000, 20) |> Base.enco
 Compiled by Anti-weakpasswords<br>
 https://stackoverflow.com/a/48352969<br>
 https://github.com/Anti-weakpasswords/PBKDF2-Test-Vectors<br>
+
+## License
+<p xmlns:dct="http://purl.org/dc/terms/">
+
+<a rel="license"
+   href="http://creativecommons.org/publicdomain/zero/1.0/">
+  <img src="http://i.creativecommons.org/p/zero/1.0/88x31.png" style="border-style: none;" alt="CC0" />
+</a>
+<br />
+To the extent possible under law,
+<a rel="dct:publisher"
+   href="https://github.com/abbate94/elixir_pbkdf2_key_derivation">https://github.com/abbate94/elixir_pbkdf2_key_derivation</a>
+has waived all copyright and related or neighboring rights to
+this work.
+</p>
