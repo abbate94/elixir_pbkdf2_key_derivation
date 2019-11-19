@@ -4,7 +4,7 @@ defmodule Pbkdf2KeyDerivation.MixProject do
   def project do
     [
       app: :pbkdf2_key_derivation,
-      version: "1.0.1",
+      version: "1.0.2",
       elixir: "~> 1.9",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,

@@ -45,7 +45,8 @@ defmodule Pbkdf2KeyDerivationTest do
             end
 
           IO.inspect([algo, pw, salt, it, key_bytes])
-          assert pbkdf2(algo, pw, salt, it, key_bytes) |> Base.encode16() == String.trim(expected)
+          assert pbkdf2!(algo, pw, salt, it, key_bytes) |> Base.encode16() ==
+                   String.trim(expected)
 
         _ ->
           raise "Invalid line\n#{line}\nin #{file}"
