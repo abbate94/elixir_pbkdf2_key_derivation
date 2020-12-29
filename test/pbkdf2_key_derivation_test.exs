@@ -1,6 +1,5 @@
 defmodule Pbkdf2KeyDerivationTest do
   use ExUnit.Case
-  doctest Pbkdf2KeyDerivation
   import Pbkdf2KeyDerivation
 
   # Test data compiled by Anti-weakpasswords
