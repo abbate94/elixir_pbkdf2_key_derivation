@@ -53,25 +53,10 @@ defmodule Pbkdf2KeyDerivation do
   ```
   """
   @spec pbkdf2!(:sha | :sha256 | :sha512, binary, binary, pos_integer, pos_integer) :: binary
-  def pbkdf2!(_algo, _pass, _salt, count, _key_bytes) when count <= 0 do
-    raise ArgumentError, message: "count must be positive"
-  end
-
-  def pbkdf2!(_algo, _pass, _salt, _count, key_bytes) when key_bytes <= 0 do
-    raise ArgumentError, message: "key_bytes must be positive"
-  end
-
   def pbkdf2!(algo, pass, salt, count, key_bytes) do
-    case hash_size(algo) do
-      {:ok, hash_bytes} ->
-        if key_bytes <= (:math.pow(2, 32) - 1) * hash_bytes do
-          pbkdf2(algo, pass, salt, count, key_bytes, hash_bytes)
-        else
-          raise ArgumentError, message: "key_bytes is too long"
-        end
-
-      {:error, err} ->
-        raise ArgumentError, message: err
+    case pbkdf2(algo, pass, salt, count, key_bytes) do
+      {:ok, key} -> key
+      {:error, error} -> raise ArgumentError, message: error
     end
   end
 
