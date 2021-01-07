@@ -9,7 +9,7 @@ The package can be installed by adding `pbkdf2_key_derivation` to your list of d
 ```elixir
 def deps do
   [
-    {:pbkdf2_key_derivation, "~> 1.0.2"}
+    {:pbkdf2_key_derivation, "~> 1.0"}
   ]
 end
 ```
