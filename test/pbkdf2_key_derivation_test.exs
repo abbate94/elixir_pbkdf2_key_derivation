@@ -43,8 +43,8 @@ defmodule Pbkdf2KeyDerivationTest do
               _ -> raise "invalid key_bytes count #{key_bytes} in #{file}"
             end
 
-          IO.inspect([algo, pw, salt, it, key_bytes])
-          assert pbkdf2!(algo, pw, salt, it, key_bytes) |> Base.encode16() ==
+          IO.inspect([pw, salt, algo, it, key_bytes])
+          assert pbkdf2!(pw, salt, algo, it, key_bytes) |> Base.encode16() ==
                    String.trim(expected)
 
         _ ->

@@ -9,7 +9,7 @@ The package can be installed by adding `pbkdf2_key_derivation` to your list of d
 ```elixir
 def deps do
   [
-    {:pbkdf2_key_derivation, "~> 1.0"}
+    {:pbkdf2_key_derivation, "~> 2.0"}
   ]
 end
 ```
@@ -19,13 +19,13 @@ Docs: [https://hexdocs.pm/pbkdf2_key_derivation](https://hexdocs.pm/pbkdf2_key_d
 
 To derive a key, use:
 ```elixir
-Pbkdf2KeyDerivation.pbkdf2!(algo, password, salt, count, key_bytes) 
+Pbkdf2KeyDerivation.pbkdf2!(password, salt, algo, count, key_bytes) 
 ```
 
 where:
-- `algo` is one of `:sha | :sha256 | :sha512`<br>
 - `password` is a `binary` containing the password
 - `salt` is a `binary` containing the salt
+- `algo` is one of `:sha | :sha256 | :sha512`<br>
 - `count`is the number of iterations (positive int)
 - `key_bytes` is the desired length of the direved key in bytes (positive int)
 
@@ -33,7 +33,7 @@ Raises an `ArgumentError` on error.
 To get a tuple `{:ok, hash}|{:error, err_msg}` instead of raising use:
 
 ```elixir
-Pbkdf2KeyDerivation.pbkdf2(algo, password, salt, count, key_bytes) 
+Pbkdf2KeyDerivation.pbkdf2(password, salt, algo, count, key_bytes) 
 ```
 
 without the `!`
@@ -42,18 +42,18 @@ without the `!`
 Derive a 32 byte key using 1000 iterations of sha256 on the password `"password"` and salt `"salt"`
 
 ```elixir
-iex> Pbkdf2KeyDerivation.pbkdf2!(:sha256, "password", "salt", 1000, 32)  
+iex> Pbkdf2KeyDerivation.pbkdf2!("password", "salt", :sha256, 1000, 32)  
 <<99, 44, 40, 18, 228, 109, 70, 4, 16, 43, 167, 97, 142, 157, 109, 125, 47, 129, 40, 246, 38, 107, 74, 3, 38, 77, 42, 4, 96, 183, 220, 179>>
 ```
 
 Derive a 64 byte key using 1000 iterations of sha512 on the password `"password"` and a random 16 byte salt.
 ```elixir
-iex> Pbkdf2KeyDerivation.pbkdf2!(:sha512, "password", :crypto.strong_rand_bytes(16), 1000, 64)
+iex> Pbkdf2KeyDerivation.pbkdf2!("password", :crypto.strong_rand_bytes(16), :sha512, 1000, 64)
 <<245, 233, 241, 60, 152, 100, 127, 147, 62, 163, 120, 246, 192, 172, 170, 81, 92, 203, 204, 169, 50, 37, 88, 128, 7, 146, 10, 154, 207, 77, 42, 81, 155, 16, 213, 100, 86, 216, 87, 240, 207, 6, 163, 37, 137, 165, 213, 57, 2, 147, ...>>
 ```
 Derive a 20 byte key using 1000 iterations of sha1 on the password `"password"` and salt `"salt"` and encode it using [Base.encode16/2](https://hexdocs.pm/elixir/Base.html#encode16/2)
 ```elixir
-iex> Pbkdf2KeyDerivation.pbkdf2!(:sha, "password", "salt", 1000, 20) |> Base.encode16
+iex> Pbkdf2KeyDerivation.pbkdf2!("password", "salt", :sha, 1000, 20) |> Base.encode16
 "6E88BE8BAD7EAE9D9E10AA061224034FED48D03F"
 ```
 

@@ -7,28 +7,28 @@ defmodule Pbkdf2KeyDerivation do
 
   ## Example
   ```
-  iex> Pbkdf2KeyDerivation.pbkdf2(:sha512, "password", "salt", 1000, 64)
+  iex> Pbkdf2KeyDerivation.pbkdf2("password", "salt", :sha512, 1000, 64)
   {:ok,
   <<175, 230, 197, 83, 7, 133, 182, 204, 107, 28, 100, 83, 56, 71, 49, 189, 94,
   228, 50, 238, 84, 159, 212, 47, 182, 105, 87, 121, 173, 138, 28, 91, 245,
   157, 230, 156, 72, 247, 116, 239, 196, 0, 125, 82, 152, 249, 3, 60, _rest>>}
   ```
   """
-  @spec pbkdf2(:sha | :sha256 | :sha512, binary, binary, pos_integer, pos_integer) ::
+  @spec pbkdf2(binary, binary, :sha | :sha256 | :sha512, pos_integer, pos_integer) ::
           {:error, String.t()} | {:ok, binary}
-  def pbkdf2(_algo, _pass, _salt, count, _key_bytes) when count <= 0 do
+  def pbkdf2(_pass, _salt, _algo, count, _key_bytes) when count <= 0 do
     {:error, "count must be positive"}
   end
 
-  def pbkdf2(_algo, _pass, _salt, _count, key_bytes) when key_bytes <= 0 do
+  def pbkdf2(_pass, _salt, _algo, _count, key_bytes) when key_bytes <= 0 do
     {:error, "key_bytes must be positive"}
   end
 
-  def pbkdf2(algo, pass, salt, count, key_bytes) do
+  def pbkdf2(pass, salt, algo, count, key_bytes) do
     case hash_size(algo) do
       {:ok, hash_bytes} ->
         if key_bytes <= (:math.pow(2, 32) - 1) * hash_bytes do
-          {:ok, pbkdf2(algo, pass, salt, count, key_bytes, hash_bytes)}
+          {:ok, pbkdf2(pass, salt, algo, count, key_bytes, hash_bytes)}
         else
           {:error, "key_bytes is too long"}
         end
@@ -46,21 +46,21 @@ defmodule Pbkdf2KeyDerivation do
 
   ## Example
   ```
-  iex> Pbkdf2KeyDerivation.pbkdf2(:sha512, "password", "salt", 1000, 64)
+  iex> Pbkdf2KeyDerivation.pbkdf2("password", "salt", :sha512, 1000, 64)
   <<175, 230, 197, 83, 7, 133, 182, 204, 107, 28, 100, 83, 56, 71, 49, 189, 94,
   228, 50, 238, 84, 159, 212, 47, 182, 105, 87, 121, 173, 138, 28, 91, 245,
   157, 230, 156, 72, 247, 116, 239, 196, 0, 125, 82, 152, 249, 3, 60, _rest>>
   ```
   """
-  @spec pbkdf2!(:sha | :sha256 | :sha512, binary, binary, pos_integer, pos_integer) :: binary
-  def pbkdf2!(algo, pass, salt, count, key_bytes) do
-    case pbkdf2(algo, pass, salt, count, key_bytes) do
+  @spec pbkdf2!(binary, binary, :sha | :sha256 | :sha512, pos_integer, pos_integer) :: binary
+  def pbkdf2!(pass, salt, algo, count, key_bytes) do
+    case pbkdf2(pass, salt, algo, count, key_bytes) do
       {:ok, key} -> key
       {:error, error} -> raise ArgumentError, message: error
     end
   end
 
-  defp pbkdf2(algo, pass, salt, count, key_bytes, hash_bytes) do
+  defp pbkdf2(pass, salt, algo, count, key_bytes, hash_bytes) do
     block_count =
       (key_bytes / hash_bytes)
       |> :math.ceil()
